@@ -1,4 +1,5 @@
 import { useTheme } from '@/Hooks'
+import useProducts from '@/Hooks/useProducts'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Title } from 'react-native-paper'
@@ -7,7 +8,9 @@ import { ProductCard } from '.'
 const Products = () => {
   const { Gutters, Colors } = useTheme()
 
-  const products = [
+  const { products } = useProducts()
+
+  const productsDump = [
     {
       name: 'Product test',
       price: 100000,

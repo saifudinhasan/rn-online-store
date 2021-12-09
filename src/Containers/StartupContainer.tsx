@@ -5,18 +5,21 @@ import { useTheme } from '@/Hooks'
 import { Brand } from '@/Components'
 import { setDefaultTheme } from '@/Store/Theme'
 import { navigateAndSimpleReset } from '@/Navigators/utils'
+import { useDispatch } from 'react-redux'
+import { loadUser } from '@/Store/Auth'
+import { getCategories } from '@/Store/Categories'
+import { getProducts } from '@/Store/Products'
 
 const StartupContainer = () => {
   const { Layout, Gutters, Fonts } = useTheme()
 
+  const dispatch = useDispatch()
   const { t } = useTranslation()
 
   const init = async () => {
-    await new Promise(resolve =>
-      setTimeout(() => {
-        resolve(true)
-      }, 200),
-    )
+    await dispatch(loadUser())
+    await dispatch(getCategories())
+    await dispatch(getProducts())
     await setDefaultTheme({ theme: 'default', darkMode: null })
     navigateAndSimpleReset('HomePage') // Splash and redirect to HomePage
   }

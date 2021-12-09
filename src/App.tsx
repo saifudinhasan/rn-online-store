@@ -6,10 +6,19 @@ import { store, persistor } from '@/Store'
 import ApplicationNavigator from '@/Navigators/Application'
 import { Provider as PaperProvider } from 'react-native-paper'
 import './Translations'
+import { initializeApp } from '@firebase/app'
+import { firebaseConfig } from './Config/firebase'
+// import Icon from 'react-native-vector-icons/Ionicons'
+
+initializeApp(firebaseConfig)
 
 const App = () => (
   <Provider store={store}>
-    <PaperProvider>
+    <PaperProvider
+    // settings={{
+    //   icon: props => <Icon {...props} />,
+    // }}
+    >
       {/**
        * PersistGate delays the rendering of the app's UI until the persisted state has been retrieved
        * and saved to redux.

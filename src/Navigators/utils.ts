@@ -9,14 +9,23 @@ import {
   createNavigationContainerRef,
 } from '@react-navigation/native'
 
+// List semua navigasi disini beserta paramsnya, jika tidak perlu params: undefined
 type RootStackParamList = {
   Startup: undefined
-  Home: undefined
+  HomePage: undefined
+  CartPage: undefined
+  ProductDetailPage: undefined
+  SearchPage: undefined
+
+  Profile: undefined
+
+  LoginPage: undefined
+  SignupPage: undefined
 }
 
 export const navigationRef = createNavigationContainerRef<RootStackParamList>()
 
-export function navigate(name: keyof RootStackParamList, params: any) {
+export function navigate(name: keyof RootStackParamList, params?: any) {
   if (navigationRef.isReady()) {
     navigationRef.navigate(name, params)
   }

@@ -2,7 +2,14 @@ import React from 'react'
 import { SafeAreaView, StatusBar } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
-import { CartContainer, SearchContainer, StartupContainer } from '@/Containers'
+import {
+  CartContainer,
+  LoginContainer,
+  ProductDetailsContainer,
+  SearchContainer,
+  StartupContainer,
+  SignupContainer,
+} from '@/Containers'
 import { useTheme } from '@/Hooks'
 import { navigationRef } from './utils'
 import HomeNavigator from './HomeBottomNavigator'
@@ -36,8 +43,25 @@ const ApplicationNavigator = () => {
           />
 
           <Stack.Screen
+            name="ProductDetailPage"
+            component={ProductDetailsContainer}
+            options={{ headerShown: true }}
+          />
+
+          <Stack.Screen
             name="SearchPage"
             component={SearchContainer}
+            options={{ headerShown: true }}
+          />
+
+          <Stack.Screen
+            name="LoginPage"
+            component={LoginContainer}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="SignupPage"
+            component={SignupContainer}
             options={{ headerShown: true }}
           />
         </Stack.Navigator>

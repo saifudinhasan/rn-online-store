@@ -1,32 +1,41 @@
 import { useTheme } from '@/Hooks'
-import React from 'react'
+import useCategories from '@/Hooks/useCategories'
+import { Category } from '@/Interfaces'
+import React, { useEffect } from 'react'
 import { FlatList, View } from 'react-native'
 import { Title } from 'react-native-paper'
 import { CategoryCard } from '.'
 
 const Categories = () => {
   const { Gutters, Colors } = useTheme()
+  const { categories } = useCategories()
 
-  const categories = [
-    {
-      name: 'Pakaian Pria',
-      image: 'url',
-    },
-    {
-      name: 'Pakaian Wanita',
-      image: 'url',
-    },
-    {
-      name: 'Mainan Anak',
-      image: 'url',
-    },
-    {
-      name: 'Kesehatan',
-      image: 'url',
-    },
-  ]
+  useEffect(() => {
+    console.log(categories)
+  }, [categories])
 
-  const renderItem = ({ item }) => <CategoryCard title={item.name} />
+  // const categoriesSkeletons = [
+  //   {
+  //     name: 'Pakaian Pria',
+  //     image: 'url',
+  //   },
+  //   {
+  //     name: 'Pakaian Wanita',
+  //     image: 'url',
+  //   },
+  //   {
+  //     name: 'Mainan Anak',
+  //     image: 'url',
+  //   },
+  //   {
+  //     name: 'Kesehatan',
+  //     image: 'url',
+  //   },
+  // ]
+
+  const renderItem = ({ item }: { item: Category }): JSX.Element => (
+    <CategoryCard category={item} />
+  )
 
   return (
     <View style={[Gutters.smallHPadding]}>
@@ -37,7 +46,7 @@ const Categories = () => {
         horizontal
         data={categories}
         renderItem={renderItem}
-        keyExtractor={item => item.name}
+        keyExtractor={item => item.id}
       />
     </View>
   )

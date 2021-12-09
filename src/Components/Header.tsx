@@ -1,15 +1,13 @@
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
-import { Appbar, Avatar, Searchbar } from 'react-native-paper'
+import { Appbar, Searchbar } from 'react-native-paper'
 import { useTheme } from '@/Hooks'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { useNavigation } from '@react-navigation/core'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { navigate } from '@/Navigators/utils'
+import FloatingUserMenu from './FloatingUserMenu'
 
 const Header = () => {
   const { Colors, Gutters } = useTheme()
-
-  const navigation = useNavigation()
 
   const [search, setSearch] = useState('')
 
@@ -26,22 +24,16 @@ const Header = () => {
         placeholder="Cari sesuatu ..."
         onChangeText={query => setSearch(query)}
         value={search}
-        onIconPress={() => navigation.navigate('SearchPage')}
+        onIconPress={() => navigate('SearchPage')}
       />
       <MaterialCommunityIcons
         name="cart"
         color={Colors.primary}
         size={34}
         style={[Gutters.smallHMargin]}
-        onPress={() => navigation.navigate('CartPage')}
+        onPress={() => navigate('CartPage')}
       />
-      <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-        <Avatar.Image
-          size={34}
-          style={[Gutters.smallRMargin]}
-          source={require('../Assets/Images/TOM.png')}
-        />
-      </TouchableOpacity>
+      <FloatingUserMenu />
     </Appbar>
   )
 }
