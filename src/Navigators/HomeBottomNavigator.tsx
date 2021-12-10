@@ -1,17 +1,13 @@
 import React from 'react'
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import {
   HomeContainer,
   NotificationContainer,
   OrderContainer,
   ProfileContainer,
 } from '@/Containers'
-// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
-// import { Avatar } from 'react-native-paper'
 
-// const Tab = createBottomTabNavigator()
 const Tab = createMaterialBottomTabNavigator()
 
 // @refresh reset

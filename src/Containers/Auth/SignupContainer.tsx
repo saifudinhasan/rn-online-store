@@ -1,10 +1,17 @@
+import OAuthButtons from '@/Components/OAuthButtons'
 import { useTheme } from '@/Hooks'
 import useAuth from '@/Hooks/useAuth'
 import { navigate, navigateAndSimpleReset } from '@/Navigators/utils'
 import { signup } from '@/Store/Auth'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { Button, Headline, Paragraph, TextInput } from 'react-native-paper'
+import {
+  ActivityIndicator,
+  Button,
+  Headline,
+  Paragraph,
+  TextInput,
+} from 'react-native-paper'
 import { useDispatch } from 'react-redux'
 
 const SignupContainer = () => {
@@ -33,6 +40,10 @@ const SignupContainer = () => {
 
     // dispatch
     dispatch(signup({ email, password }))
+  }
+
+  if (authLoading) {
+    return <ActivityIndicator style={styles.Loading} />
   }
 
   return (
@@ -99,15 +110,7 @@ const SignupContainer = () => {
         Signup
       </Button>
 
-      <Button
-        icon="google"
-        mode="contained"
-        onPress={() => console.log('Pressed')}
-        style={[styles.Input, Gutters.regularTMargin, Gutters.smallVPadding]}
-        color={Colors.primary}
-      >
-        Signup with Google
-      </Button>
+      <OAuthButtons />
 
       <Paragraph
         style={[Gutters.regularTMargin]}
@@ -138,5 +141,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: '10%',
     color: 'red',
+  },
+  Loading: {
+    flex: 1,
   },
 })

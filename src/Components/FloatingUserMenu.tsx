@@ -7,7 +7,6 @@ import { StyleSheet, TouchableOpacity } from 'react-native'
 import { Menu, Divider, Avatar } from 'react-native-paper'
 import { useDispatch } from 'react-redux'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-// import Icon from 'react-native-vector-icons/Ionicons'
 
 const FloatingUserMenu = () => {
   const [visible, setVisible] = useState(false)
@@ -21,10 +20,8 @@ const FloatingUserMenu = () => {
 
   const handleLogout = async () => {
     try {
-      console.log(1)
-      dispatch(logout())
+      await dispatch(logout())
       closeMenu()
-      console.log(2)
     } catch (error) {}
   }
 

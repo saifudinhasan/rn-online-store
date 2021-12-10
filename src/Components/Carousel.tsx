@@ -1,9 +1,9 @@
 import React from 'react'
-import { Dimensions, Image, StyleSheet } from 'react-native'
+import { Dimensions, Image } from 'react-native'
 
 const Carousel = () => {
   // Keep aspect ration to 1 x 3 for carousel images
-  const { width } = Dimensions.get('window');
+  const { width } = Dimensions.get('window')
   const ratio = 1 / 3
   const style = {
     width,
@@ -20,13 +20,3 @@ const Carousel = () => {
 }
 
 export default Carousel
-
-const styles = StyleSheet.create({
-  Image: {
-    width: '100%',
-    height: '40%',
-  },
-})
-
-// resizeMode={'cover'}
-//   style={{ width: '100%', height: 200 }}

@@ -23,8 +23,6 @@ export const getProducts = createAsyncThunk<Product[]>(
       query.forEach(
         doc => (payload = [...payload, { id: doc.id, ...doc.data() }]),
       )
-      console.log('PRODUCTS')
-      console.log(payload)
       return payload
     } catch (error) {
       return rejectWithValue(error)

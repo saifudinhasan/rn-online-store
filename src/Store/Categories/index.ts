@@ -18,7 +18,6 @@ export const getCategories = createAsyncThunk<Category[]>(
   'getCategories',
   async (_, { rejectWithValue }) => {
     try {
-      // const query = await getDocs(collection(firestore, 'categories'))
       let payload: Category[] | any = []
       const query = await firestore().collection('categories').get()
       query.forEach(

@@ -1,10 +1,17 @@
+import OAuthButtons from '@/Components/OAuthButtons'
 import { useTheme } from '@/Hooks'
 import useAuth from '@/Hooks/useAuth'
 import { navigate, navigateAndSimpleReset } from '@/Navigators/utils'
 import { login } from '@/Store/Auth'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { Button, Headline, Paragraph, TextInput } from 'react-native-paper'
+import {
+  ActivityIndicator,
+  Button,
+  Headline,
+  Paragraph,
+  TextInput,
+} from 'react-native-paper'
 import { useDispatch } from 'react-redux'
 
 const LoginContainer = () => {
@@ -21,9 +28,11 @@ const LoginContainer = () => {
   }, [authenticated])
 
   const handleLogin = () => {
-    // validation
-
     dispatch(login({ email, password }))
+  }
+
+  if (authLoading) {
+    return <ActivityIndicator style={styles.Loading} />
   }
 
   return (
@@ -53,11 +62,11 @@ const LoginContainer = () => {
       {error && (
         <Text style={[Gutters.smallTMargin, styles.Error]}>
           {error
-            .split('Error ')[1]
-            .replace(/[-()/.]/gi, ' ')
-            .replace('auth', 'Auth error :')
-            .trim()}
-          , please try again
+            ?.split('Error ')[1]
+            ?.replace(/[-()/.]/gi, ' ')
+            ?.replace('auth', 'Auth error :')
+            ?.trim()}
+          Please try again
         </Text>
       )}
 
@@ -72,15 +81,7 @@ const LoginContainer = () => {
         Login
       </Button>
 
-      <Button
-        icon="google"
-        mode="contained"
-        onPress={() => console.log('Pressed')}
-        style={[styles.Input, Gutters.regularTMargin, Gutters.smallVPadding]}
-        color={Colors.primary}
-      >
-        Login with Google
-      </Button>
+      <OAuthButtons />
 
       <Paragraph
         style={[Gutters.regularTMargin]}
@@ -111,5 +112,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginLeft: '10%',
     color: 'red',
+  },
+  Loading: {
+    flex: 1,
   },
 })
