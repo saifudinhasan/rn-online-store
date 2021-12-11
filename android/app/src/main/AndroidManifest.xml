@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.testapp">
+  package="com.ecom.rn.onlinestore">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -23,8 +23,8 @@
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
             <data
-                android:pathPrefix="/com.testapp/android/callback"
-                android:scheme="com.testapp" />
+                android:pathPrefix="/com.ecom.rn.onlinestore/android/callback"
+                android:scheme="com.ecom.rn.onlinestore" />
         </intent-filter>
       </activity>
     </application>

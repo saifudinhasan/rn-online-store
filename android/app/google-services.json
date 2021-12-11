@@ -8,24 +8,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:286418740588:android:0e13889fec560f7451bf49",
+        "mobilesdk_app_id": "1:286418740588:android:9be3fb4973558c1051bf49",
         "android_client_info": {
-          "package_name": "com.testapp"
+          "package_name": "com.ecom.rn.onlinestore"
         }
       },
       "oauth_client": [
         {
-          "client_id": "286418740588-lp84im3g89rr0at235044pc58of6hjo0.apps.googleusercontent.com",
+          "client_id": "286418740588-u86i9vpd31bqfam677lgv4gghvoerblf.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.testapp",
-            "certificate_hash": "fead7acd7998e87453464027f22d17bcaac2fde8"
+            "package_name": "com.ecom.rn.onlinestore",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
+        },
+        {
+          "client_id": "286418740588-v0b14s6r1cspt6m0596iblds3t0maluu.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyABrldCQrphU24lbengnrrAc-Jw4G_eRLw"
+          "current_key": "AIzaSyDGa0WXG-aBSJV6HK_VuN2l6p1YO83KBzg"
         }
       ],
       "services": {

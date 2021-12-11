@@ -20,7 +20,7 @@ const FloatingUserMenu = () => {
 
   const handleLogout = async () => {
     try {
-      await dispatch(logout())
+      await dispatch(logout(currentUser))
       closeMenu()
     } catch (error) {}
   }
