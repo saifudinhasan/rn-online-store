@@ -13,6 +13,7 @@ import {
 import { useTheme } from '@/Hooks'
 import { navigationRef } from './utils'
 import HomeNavigator from './HomeBottomNavigator'
+import useAuth from '@/Hooks/useAuth'
 
 const Stack = createStackNavigator()
 
@@ -20,6 +21,7 @@ const Stack = createStackNavigator()
 const ApplicationNavigator = () => {
   const { Layout, darkMode, NavigationTheme } = useTheme()
   const { colors } = NavigationTheme
+  const { authenticated } = useAuth()
 
   return (
     <SafeAreaView style={[Layout.fill, { backgroundColor: colors.card }]}>
@@ -37,15 +39,9 @@ const ApplicationNavigator = () => {
           />
 
           <Stack.Screen
-            name="CartPage"
-            component={CartContainer}
-            options={{ headerShown: true }}
-          />
-
-          <Stack.Screen
             name="ProductDetailPage"
             component={ProductDetailsContainer}
-            options={{ headerShown: true }}
+            options={{ headerShown: false }}
           />
 
           <Stack.Screen
@@ -54,16 +50,29 @@ const ApplicationNavigator = () => {
             options={{ headerShown: true }}
           />
 
-          <Stack.Screen
-            name="LoginPage"
-            component={LoginContainer}
-            options={{ headerShown: true }}
-          />
-          <Stack.Screen
-            name="SignupPage"
-            component={SignupContainer}
-            options={{ headerShown: true }}
-          />
+          {authenticated ? (
+            <>
+              <Stack.Screen
+                name="CartPage"
+                component={CartContainer}
+                options={{ headerShown: true }}
+              />
+            </>
+          ) : (
+            <>
+              <Stack.Screen
+                name="LoginPage"
+                component={LoginContainer}
+                options={{ headerShown: true }}
+              />
+
+              <Stack.Screen
+                name="SignupPage"
+                component={SignupContainer}
+                options={{ headerShown: true }}
+              />
+            </>
+          )}
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

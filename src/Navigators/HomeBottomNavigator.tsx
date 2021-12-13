@@ -1,17 +1,21 @@
 import React from 'react'
 import {
   HomeContainer,
+  LoginContainer,
   NotificationContainer,
   OrderContainer,
   ProfileContainer,
 } from '@/Containers'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons'
+import useAuth from '@/Hooks/useAuth'
 
 const Tab = createMaterialBottomTabNavigator()
 
 // @refresh reset
 const HomeNavigator = () => {
+  const { authenticated } = useAuth()
+
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -61,7 +65,7 @@ const HomeNavigator = () => {
 
       <Tab.Screen
         name="Profile"
-        component={ProfileContainer}
+        component={authenticated ? ProfileContainer : LoginContainer}
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color, focused }) => (
@@ -72,7 +76,7 @@ const HomeNavigator = () => {
             />
             // <Avatar.Image
             //   size={24}
-            //   // style={[Gutters.smallRMargin]}
+            //   style={[Gutters.smallRMargin]}
             //   source={require('../Assets/Images/TOM.png')}
             // />
           ),

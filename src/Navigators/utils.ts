@@ -4,17 +4,18 @@
  *
  * You can add other navigation functions that you need and export them
  */
+import { Product } from '@/Interfaces/Product'
 import {
   CommonActions,
   createNavigationContainerRef,
 } from '@react-navigation/native'
 
 // List semua navigasi disini beserta paramsnya, jika tidak perlu params: undefined
-type RootStackParamList = {
+export type RootStackParamList = {
   Startup: undefined
   HomePage: undefined
   CartPage: undefined
-  ProductDetailPage: undefined
+  ProductDetailPage: Product
   SearchPage: undefined
 
   Profile: undefined

@@ -2,34 +2,23 @@ import { useTheme } from '@/Hooks'
 import { Product } from '@/Interfaces/Product'
 import { navigate } from '@/Navigators/utils'
 import { getDiscountPrice, getIndonesianPrice } from '@/Utils'
+import { WINDOW_WIDTH } from '@/Utils/getDimensions'
 import React from 'react'
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Card } from 'react-native-paper'
 
-const ProductCard = ({
-  item: { name, price, images, discount },
-  index,
-}: {
-  item: Product
-  index: number
-}) => {
+const ProductCard = ({ item, index }: { item: Product; index: number }) => {
   const { Gutters, MetricsSizes, Colors } = useTheme()
 
-  const { width } = Dimensions.get('window')
+  const { name, price, images, discount } = item
 
   // Width hack : width - 10 for padding right and left, 10 for middle gap
-  const cardWidth = () => (width - 3 * Number(MetricsSizes.small)) / 2
+  const cardWidth = () => (WINDOW_WIDTH - 3 * Number(MetricsSizes.small)) / 2
 
   return (
     // We can't use FlatList inside ScrollView
     <TouchableOpacity
-      onPress={() => navigate('ProductDetailPage')}
+      onPress={() => navigate('ProductDetailPage', item)}
       style={[
         styles.Card,
         index % 2 === 0 && Gutters.smallRMargin,

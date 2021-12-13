@@ -1,13 +1,13 @@
+import { WINDOW_WIDTH } from '@/Utils/getDimensions'
 import React from 'react'
-import { Dimensions, Image } from 'react-native'
+import { Image } from 'react-native'
 
 const Carousel = () => {
   // Keep aspect ration to 1 x 3 for carousel images
-  const { width } = Dimensions.get('window')
   const ratio = 1 / 3
   const style = {
-    width,
-    height: width * ratio,
+    width: WINDOW_WIDTH,
+    height: WINDOW_WIDTH * ratio,
   }
 
   return (

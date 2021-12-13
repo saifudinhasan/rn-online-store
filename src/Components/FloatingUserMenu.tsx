@@ -7,6 +7,7 @@ import { StyleSheet, TouchableOpacity } from 'react-native'
 import { Menu, Divider, Avatar } from 'react-native-paper'
 import { useDispatch } from 'react-redux'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import { getUserLabel } from '@/Utils'
 
 const FloatingUserMenu = () => {
   const [visible, setVisible] = useState(false)
@@ -23,24 +24,6 @@ const FloatingUserMenu = () => {
       await dispatch(logout(currentUser))
       closeMenu()
     } catch (error) {}
-  }
-
-  const userLabel = (): string => {
-    if (currentUser?.email) {
-      const emailUser: string[] = currentUser.email.split('@')
-      const username = emailUser[0]
-      const splitUsername: string[] = username.split('.')
-      // somename@email.com -> SO
-      if (splitUsername.length === 1) {
-        return `${username[0]}${username[1]}`.toUpperCase()
-      }
-      // some.name@email.com -> SN
-      if (splitUsername.length > 1) {
-        return `${splitUsername[0][0]}${splitUsername[1][0]}`.toUpperCase()
-      }
-    }
-    // Typescript hack
-    return (currentUser?.email && currentUser?.email[0]?.toUpperCase()) || ''
   }
 
   return (
@@ -63,7 +46,7 @@ const FloatingUserMenu = () => {
                   Gutters.smallRMargin,
                   { backgroundColor: Colors.primary },
                 ]}
-                label={userLabel()}
+                label={getUserLabel(currentUser?.email || '')}
                 labelStyle={styles.LabelStyle}
               />
             )

@@ -180,7 +180,6 @@ export const login = createAsyncThunk<IUser, ILoginParams>(
 
       return userInfo
     } catch (err) {
-      console.log(err)
       return rejectWithValue(err)
     }
   },
@@ -244,8 +243,6 @@ export const logout = createAsyncThunk<void, IUser | null>(
 export const loadUser = createAsyncThunk<IUser | null>(
   'loadUser',
   async (_, { rejectWithValue }) => {
-    // const userCache = await AsyncStorageLib.getItem('currentUser')
-
     let user: IUser = JSON.parse(
       (await AsyncStorageLib.getItem('currentUser')) || '',
     )
