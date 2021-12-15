@@ -4,7 +4,8 @@ import useCarts from '@/Hooks/useCarts'
 import { Product } from '@/Interfaces/Product'
 import { deleteCart, updateCart } from '@/Store/Carts'
 import { getDiscountPrice, getIndonesianPrice } from '@/Utils'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import debounce from 'lodash.debounce'
 
 import {
   Image,
@@ -35,6 +36,7 @@ const CartList = ({
   const { Colors } = useTheme()
   const dispatch = useDispatch()
   const { cartLoading } = useCarts()
+  const inputRef: any = useRef(null)
 
   const isAlreadyInTheCart = () =>
     selectedCarts.find((cart: any) => cart.product.id === product.id)
@@ -66,8 +68,6 @@ const CartList = ({
     type: 'add' | 'subtract' | 'value',
     value?: number,
   ) => {
-    // if (cartLoading) return
-
     setSelectedCarts((prevCarts: any) =>
       prevCarts.map((cart: any) => {
         if (cart.product.id !== product.id) return cart
@@ -108,6 +108,12 @@ const CartList = ({
       prevCarts.filter((cart: any) => cart.product.id !== product.id),
     )
   }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debouncedValue = useCallback(
+    debounce(value => handleUpdateCartList('value', value), 300),
+    [],
+  )
 
   return (
     <View style={styles.CartListContainer}>
@@ -165,11 +171,14 @@ const CartList = ({
           style={[styles.Input, { color: Colors.primary }]}
           onChangeText={text => {
             if (text.length === 0 || !text) return
-            if (Number(text) < 1) return
-            handleUpdateCartList('value', Number(text))
+            if (!Number(text)) return inputRef?.current.clear()
+            if (Number(text) < 1 || Number(text) > 999)
+              return inputRef?.current.clear()
+            debouncedValue(Number(text))
           }}
           keyboardType="numeric"
           multiline={false}
+          ref={inputRef}
           // editable={!cartLoading}
         />
 

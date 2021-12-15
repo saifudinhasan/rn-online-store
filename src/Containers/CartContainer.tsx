@@ -2,14 +2,19 @@
 /* eslint-disable curly */
 import useCarts from '@/Hooks/useCarts'
 import React, { useEffect, useState } from 'react'
-import { Alert, ScrollView, StyleSheet, View } from 'react-native'
+import {
+  TouchableOpacity,
+  Alert,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native'
 import { CartList } from '@/Components'
 import { Button, Checkbox, Text } from 'react-native-paper'
 import { getDiscountPrice, getIndonesianPrice } from '@/Utils'
 import { useTheme } from '@/Hooks'
 import { navigate } from '@/Navigators/utils'
 import useAuth from '@/Hooks/useAuth'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const CartContainer = () => {
   const { products } = useCarts()

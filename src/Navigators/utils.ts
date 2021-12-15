@@ -17,7 +17,7 @@ export type RootStackParamList = {
   HomePage: undefined
   CartPage: undefined
   ProductDetailPage: Product
-  SearchPage: undefined
+  SearchPage: { query: string }
   InvoicePage: Order
 
   Orders: undefined

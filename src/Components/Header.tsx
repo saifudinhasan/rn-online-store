@@ -1,3 +1,4 @@
+/* eslint-disable curly */
 import React, { useState } from 'react'
 import { StyleSheet, TouchableOpacity, Text } from 'react-native'
 import { Appbar, Searchbar } from 'react-native-paper'
@@ -12,7 +13,7 @@ const Header = () => {
   const { Colors, Gutters } = useTheme()
   const { products } = useCarts()
   const { authenticated } = useAuth()
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState<string>('')
 
   return (
     <Appbar style={styles.Appbar}>
@@ -27,7 +28,11 @@ const Header = () => {
         placeholder="Cari sesuatu ..."
         onChangeText={query => setSearch(query)}
         value={search}
-        onIconPress={() => navigate('SearchPage')}
+        onIconPress={() => {
+          if (search.length < 3) return
+          setSearch('')
+          navigate('SearchPage', { query: search })
+        }}
       />
       <TouchableOpacity
         style={[Gutters.smallHMargin, styles.CartsContainer]}

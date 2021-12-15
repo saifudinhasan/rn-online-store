@@ -11,7 +11,7 @@ import { getDiscountPrice, getIndonesianPrice } from '@/Utils'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { useEffect, useState } from 'react'
 import { Alert, Image, StyleSheet, Text, View } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
+import { ScrollView } from 'react-native'
 import {
   ActivityIndicator,
   Button,
