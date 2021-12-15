@@ -1,5 +1,6 @@
 import { useTheme } from '@/Hooks'
 import useAuth from '@/Hooks/useAuth'
+import { navigateAndSimpleReset } from '@/Navigators/utils'
 import { azureLogin, googleLogin } from '@/Store/Auth'
 import React from 'react'
 import { StyleSheet } from 'react-native'
@@ -17,7 +18,12 @@ const OAuthButtons = () => {
       <Button
         icon="microsoft"
         mode="contained"
-        onPress={() => dispatch(azureLogin())}
+        onPress={async () => {
+          try {
+            await dispatch(azureLogin())
+            navigateAndSimpleReset('Startup')
+          } catch (error) {}
+        }}
         style={[styles.Button, Gutters.regularTMargin, Gutters.smallVPadding]}
         color={authLoading ? '#555' : Colors.primary}
         loading={authLoading}
@@ -28,7 +34,12 @@ const OAuthButtons = () => {
       <Button
         icon="google"
         mode="contained"
-        onPress={() => dispatch(googleLogin())}
+        onPress={async () => {
+          try {
+            await dispatch(googleLogin())
+            navigateAndSimpleReset('Startup')
+          } catch (error) {}
+        }}
         style={[styles.Button, Gutters.regularTMargin, Gutters.smallVPadding]}
         color={authLoading ? '#555' : Colors.primary}
         loading={authLoading}

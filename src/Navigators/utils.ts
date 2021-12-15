@@ -4,6 +4,7 @@
  *
  * You can add other navigation functions that you need and export them
  */
+import { Order } from '@/Interfaces/Order'
 import { Product } from '@/Interfaces/Product'
 import {
   CommonActions,
@@ -17,7 +18,9 @@ export type RootStackParamList = {
   CartPage: undefined
   ProductDetailPage: Product
   SearchPage: undefined
+  InvoicePage: Order
 
+  Orders: undefined
   Profile: undefined
 
   LoginPage: undefined

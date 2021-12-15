@@ -6,9 +6,11 @@ import { Brand } from '@/Components'
 import { setDefaultTheme } from '@/Store/Theme'
 import { navigateAndSimpleReset } from '@/Navigators/utils'
 import { useDispatch } from 'react-redux'
-import { loadUser } from '@/Store/Auth'
 import { getCategories } from '@/Store/Categories'
 import { getProducts } from '@/Store/Products'
+import { getUserCarts } from '@/Store/Carts'
+import { getSlideBanners } from '@/Store/SlideBanners'
+import { getUserOrder } from '@/Store/Orders'
 
 const StartupContainer = () => {
   const { Layout, Gutters, Fonts } = useTheme()
@@ -17,9 +19,13 @@ const StartupContainer = () => {
   const { t } = useTranslation()
 
   const init = async () => {
-    await dispatch(loadUser())
     await dispatch(getCategories())
     await dispatch(getProducts())
+    await dispatch(getSlideBanners())
+
+    await dispatch(getUserCarts())
+    await dispatch(getUserOrder())
+
     await setDefaultTheme({ theme: 'default', darkMode: null })
     navigateAndSimpleReset('HomePage') // Splash and redirect to HomePage
   }

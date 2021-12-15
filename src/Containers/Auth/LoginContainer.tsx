@@ -3,7 +3,7 @@ import { useTheme } from '@/Hooks'
 import useAuth from '@/Hooks/useAuth'
 import { navigate, navigateAndSimpleReset } from '@/Navigators/utils'
 import { login } from '@/Store/Auth'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import {
   ActivityIndicator,
@@ -16,19 +16,16 @@ import { useDispatch } from 'react-redux'
 
 const LoginContainer = () => {
   const { Colors, Gutters } = useTheme()
-  const { authLoading, error, authenticated } = useAuth()
+  const { authLoading, error } = useAuth()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    authenticated && navigateAndSimpleReset('HomePage')
-  }, [authenticated])
-
-  const handleLogin = () => {
-    dispatch(login({ email, password }))
+  const handleLogin = async () => {
+    await dispatch(login({ email, password }))
+    navigateAndSimpleReset('Startup')
   }
 
   if (authLoading) {

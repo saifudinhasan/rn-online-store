@@ -3,7 +3,7 @@ import { Category } from '@/Interfaces'
 import { navigate } from '@/Navigators/utils'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { TouchableOpacity } from 'react-native'
 import { Card } from 'react-native-paper'
 
 const CategoryCard = ({
@@ -14,7 +14,10 @@ const CategoryCard = ({
   const { Gutters, Colors } = useTheme()
 
   return (
-    <TouchableOpacity onPress={() => navigate('SearchPage')}>
+    <TouchableOpacity
+      onPress={() => navigate('SearchPage')}
+      style={styles.Container}
+    >
       <Card style={[Gutters.smallRMargin, styles.Card]} mode="elevated">
         <Card.Cover
           source={{ uri: imageURL }}
@@ -34,9 +37,14 @@ const CategoryCard = ({
 export default CategoryCard
 
 const styles = StyleSheet.create({
+  Container: {
+    paddingBottom: 10,
+    paddingTop: 4,
+    paddingLeft: 4,
+  },
   Card: {
     width: 100,
-    elevation: 7,
+    elevation: 3,
   },
   Image: {
     height: 100,

@@ -1,5 +1,6 @@
 import { useTheme } from '@/Hooks'
 import useAuth from '@/Hooks/useAuth'
+import { navigateAndSimpleReset } from '@/Navigators/utils'
 import { logout } from '@/Store/Auth'
 import { getUserLabel } from '@/Utils'
 import React from 'react'
@@ -45,7 +46,10 @@ const ProfileContainer = () => {
       <Button
         icon="logout"
         mode="contained"
-        onPress={() => dispatch(logout(currentUser))}
+        onPress={async () => {
+          await dispatch(logout(currentUser))
+          navigateAndSimpleReset('Startup')
+        }}
         style={[styles.Button, Gutters.regularTMargin, Gutters.smallVPadding]}
         color={authLoading ? '#555' : Colors.primary}
         loading={authLoading}
@@ -63,6 +67,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   FloatingMenu: {
     backgroundColor: 'white',

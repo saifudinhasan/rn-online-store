@@ -1,7 +1,11 @@
+import { useTheme } from '@/Hooks'
+import useAuth from '@/Hooks/useAuth'
+import useCarts from '@/Hooks/useCarts'
+import { navigate } from '@/Navigators/utils'
 import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { Animated, StyleSheet } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { TouchableOpacity } from 'react-native'
 import { Title } from 'react-native-paper'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
@@ -13,7 +17,9 @@ const ProductDetailsHeader = ({
   event: Animated.Value
 }) => {
   const scrollY = event
-
+  const { Colors } = useTheme()
+  const { products } = useCarts()
+  const { authenticated } = useAuth()
   const navigation = useNavigation()
 
   const TitleOpacity = scrollY.interpolate({
@@ -34,6 +40,12 @@ const ProductDetailsHeader = ({
     extrapolate: 'clamp',
   })
 
+  const CartCountBackgroundColor = scrollY.interpolate({
+    inputRange: [0, 100],
+    outputRange: ['rgba(255, 255, 255, 0)', '#fff'],
+    extrapolate: 'clamp',
+  })
+
   return (
     <Animated.View
       style={[
@@ -49,12 +61,14 @@ const ProductDetailsHeader = ({
           { backgroundColor: headerButtonColor },
         ]}
       >
-        <TouchableOpacity style={styles.HeaderButtonWrapper}>
+        <TouchableOpacity
+          style={styles.HeaderButtonWrapper}
+          onPress={navigation.goBack}
+        >
           <MaterialCommunityIcons
             name="arrow-left"
             size={28}
             style={[styles.HeaderButton]}
-            onPress={navigation.goBack}
           />
         </TouchableOpacity>
       </Animated.View>
@@ -73,13 +87,29 @@ const ProductDetailsHeader = ({
           { backgroundColor: headerButtonColor },
         ]}
       >
-        <TouchableOpacity style={styles.HeaderButtonWrapper}>
+        <TouchableOpacity
+          style={styles.HeaderButtonWrapper}
+          onPress={() => navigate(authenticated ? 'CartPage' : 'LoginPage')}
+        >
           <MaterialCommunityIcons
             name="cart"
             size={22}
             style={[styles.HeaderButton]}
-            onPress={() => {}}
           />
+          {authenticated && (
+            <Animated.Text
+              style={[
+                styles.TotalCarts,
+                {
+                  color: Colors.primary,
+                  opacity: TitleOpacity,
+                  backgroundColor: CartCountBackgroundColor,
+                },
+              ]}
+            >
+              {products?.length || 0}
+            </Animated.Text>
+          )}
         </TouchableOpacity>
       </Animated.View>
     </Animated.View>
@@ -100,15 +130,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     paddingHorizontal: 10,
-
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 6,
-    // },
-    // shadowOpacity: 0.37,
-    // shadowRadius: 7.49,
-    // elevation: 12,
   },
   HeaderTitleWrapper: {
     flex: 1,
@@ -123,9 +144,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 35,
+    position: 'relative',
   },
   HeaderButton: {
     color: '#fff',
     textAlign: 'center',
+  },
+  TotalCarts: {
+    borderColor: 'salmon',
+    position: 'absolute',
+    top: -5,
+    right: -2,
+    borderWidth: 1,
+    height: 18,
+    width: 18,
+    borderRadius: 9,
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 5,
+    fontSize: 10,
+    lineHeight: 10,
+    fontWeight: 'bold',
   },
 })

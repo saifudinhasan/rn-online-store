@@ -1,18 +1,18 @@
 import { Header, Products } from '@/Components'
-import { Carousel, Categories } from '@/Components'
-import useAuth from '@/Hooks/useAuth'
+import { SlideCarousel, Categories } from '@/Components'
 import React from 'react'
-import { ScrollView, Text } from 'react-native'
+import { ScrollView, StyleSheet } from 'react-native'
 
 const HomeContainer = () => {
-  const { authenticated, currentUser } = useAuth()
-
   return (
     <>
       <Header />
-      <ScrollView>
-        <Carousel />
-        {authenticated && <Text>Authenticated to : {currentUser?.email}</Text>}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        style={styles.Container}
+      >
+        <SlideCarousel />
         <Categories />
         <Products />
       </ScrollView>
@@ -21,3 +21,9 @@ const HomeContainer = () => {
 }
 
 export default HomeContainer
+
+const styles = StyleSheet.create({
+  Container: {
+    backgroundColor: '#fff',
+  },
+})

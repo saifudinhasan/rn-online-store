@@ -1,4 +1,3 @@
-import AsyncStorageLib from '@react-native-async-storage/async-storage'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import AzureAuth from 'react-native-azure-auth'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
@@ -93,8 +92,6 @@ export const azureLogin = createAsyncThunk<IUser>(
         ...tokens,
       }
 
-      await AsyncStorageLib.setItem('currentUser', JSON.stringify(userInfo))
-
       return userInfo
     } catch (error) {
       return rejectWithValue(error)
@@ -140,8 +137,6 @@ export const googleLogin = createAsyncThunk<IUser>(
         accessToken: credential.accessToken,
       }
 
-      await AsyncStorageLib.setItem('currentUser', JSON.stringify(userInfo))
-
       return userInfo
     } catch (error) {
       return rejectWithValue(error)
@@ -176,8 +171,6 @@ export const login = createAsyncThunk<IUser, ILoginParams>(
         refreshToken,
       }
 
-      await AsyncStorageLib.setItem('currentUser', JSON.stringify(userInfo))
-
       return userInfo
     } catch (err) {
       return rejectWithValue(err)
@@ -211,8 +204,6 @@ export const signup = createAsyncThunk<IUser, ISignupParams>(
         refreshToken,
       }
 
-      await AsyncStorageLib.setItem('currentUser', JSON.stringify(userInfo))
-
       return userInfo
     } catch (err) {
       return rejectWithValue(err)
@@ -233,71 +224,8 @@ export const logout = createAsyncThunk<void, IUser | null>(
       if (user?.providerId === 'azure') {
         // await azureAuth.webAuth.clearSession({ closeOnLoad: true })
       }
-      await AsyncStorageLib.removeItem('currentUser')
     } catch (error) {
       rejectWithValue(error)
-    }
-  },
-)
-
-export const loadUser = createAsyncThunk<IUser | null>(
-  'loadUser',
-  async (_, { rejectWithValue }) => {
-    let user: IUser = JSON.parse(
-      (await AsyncStorageLib.getItem('currentUser')) || '',
-    )
-
-    /**
-     * @azureAD
-     * Expiration time of expiredOn props is 1 hour after login
-     * Expiration time of idTokenExpireOn props is 1 day after login
-     */
-
-    if (user) {
-      // Check microsoft account and checking token ...
-      if (user.providerId === 'azure' && user.expireOn) {
-        const skipTime: number = 5 * 60 * 1000
-        // if skip time == 5 minutes, it means get new token 5 minutes before expiration time
-        if (user.expireOn - skipTime < new Date().getTime()) {
-          // Get new accessToken
-          const newAzureTokens = await azureAuth.auth.acquireTokenSilent({
-            userId: user.email || '',
-            scope: azureConfig.appScopes,
-          })
-
-          // fetch from msGraph with new accessToken
-          const reloadUser = await azureAuth.auth.msGraphRequest({
-            token: newAzureTokens?.accessToken || '',
-            path: 'me',
-          })
-
-          user = {
-            displayName: reloadUser.displayName,
-            email: reloadUser.userPrincipalName,
-            phoneNumber: reloadUser.mobilePhone,
-            photoURL: null,
-            uid: reloadUser.id,
-            providerId: 'azure',
-            ...newAzureTokens,
-          }
-
-          await AsyncStorageLib.setItem('currentUser', JSON.stringify(user))
-        }
-      }
-
-      // Check google account and checking token ...
-      if (user.providerId === 'google') {
-        const isSignedIn = await GoogleSignin.isSignedIn()
-        if (isSignedIn) {
-          const newGoogleTokens = await GoogleSignin.getTokens()
-          user = { ...user, ...newGoogleTokens }
-          await AsyncStorageLib.setItem('currentUser', JSON.stringify(user))
-        }
-      }
-
-      return user
-    } else {
-      return rejectWithValue({ message: 'User not found' })
     }
   },
 )
@@ -381,21 +309,6 @@ const authSlice = createSlice({
       .addCase(logout.pending, state => {
         state.authLoading = true
         state.error = null
-      })
-
-      .addCase(loadUser.fulfilled, (state, { payload }) => {
-        state.authenticated = true
-        state.currentUser = payload
-        state.authLoading = false
-      })
-      .addCase(loadUser.pending, state => {
-        state.authLoading = true
-        state.error = null
-      })
-
-      .addCase(loadUser.rejected, state => {
-        state.authenticated = false
-        state.authLoading = false
       })
   },
 })

@@ -35,7 +35,7 @@ const HomeNavigator = () => {
 
       <Tab.Screen
         name="Orders"
-        component={OrderContainer}
+        component={!authenticated ? LoginContainer : OrderContainer}
         options={{
           tabBarLabel: 'Orders',
           tabBarIcon: ({ color, focused }) => (
@@ -74,11 +74,6 @@ const HomeNavigator = () => {
               color={color}
               size={24}
             />
-            // <Avatar.Image
-            //   size={24}
-            //   style={[Gutters.smallRMargin]}
-            //   source={require('../Assets/Images/TOM.png')}
-            // />
           ),
         }}
       />

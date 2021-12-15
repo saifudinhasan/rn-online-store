@@ -1,6 +1,6 @@
 import { useTheme } from '@/Hooks'
 import useAuth from '@/Hooks/useAuth'
-import { navigate } from '@/Navigators/utils'
+import { navigate, navigateAndSimpleReset } from '@/Navigators/utils'
 import { logout } from '@/Store/Auth'
 import React, { useState } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
@@ -23,6 +23,7 @@ const FloatingUserMenu = () => {
     try {
       await dispatch(logout(currentUser))
       closeMenu()
+      navigateAndSimpleReset('Startup')
     } catch (error) {}
   }
 

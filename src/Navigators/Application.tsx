@@ -14,6 +14,7 @@ import { useTheme } from '@/Hooks'
 import { navigationRef } from './utils'
 import HomeNavigator from './HomeBottomNavigator'
 import useAuth from '@/Hooks/useAuth'
+import InvoiceContainer from '@/Containers/InvoiceContainer'
 
 const Stack = createStackNavigator()
 
@@ -56,6 +57,11 @@ const ApplicationNavigator = () => {
                 name="CartPage"
                 component={CartContainer}
                 options={{ headerShown: true }}
+              />
+              <Stack.Screen
+                name="InvoicePage"
+                component={InvoiceContainer}
+                options={{ headerShown: false }}
               />
             </>
           ) : (

@@ -1,43 +1,44 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { combineReducers, Middleware } from 'redux'
-import {
-  persistReducer,
-  persistStore,
-  // FLUSH,
-  // REHYDRATE,
-  // PAUSE,
-  // PERSIST,
-  // PURGE,
-  // REGISTER,
-} from 'redux-persist'
+import { persistReducer, persistStore } from 'redux-persist'
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 
 import { api } from '@/Services/api'
-import * as modules from '@/Services/modules'
 import theme from './Theme'
 import auth from './Auth'
 import categories from './Categories'
 import products from './Products'
+import carts from './Carts'
+import slideBanners from './SlideBanners'
+import orders from './Orders'
+import { encryptTransform } from 'redux-persist-transform-encrypt'
+import { createBlacklistFilter } from 'redux-persist-transform-filter'
 
 const reducers = combineReducers({
   theme,
   auth,
   categories,
   products,
-  ...Object.values(modules).reduce(
-    (acc, module) => ({
-      ...acc,
-      [module.reducerPath]: module.reducer,
-    }),
-    {},
-  ),
+  carts,
+  slideBanners,
+  orders,
 })
 
+const saveAuthSubsetBlacklistFilter = createBlacklistFilter('auth')
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['theme'],
+  //   whitelist: ['theme', 'auth', 'products', 'categories'],
+  transforms: [
+    encryptTransform({
+      secretKey: 'my-super-secret-key',
+      onError: function (error: any) {
+        console.log('Failed to encrypt', error)
+      },
+    }),
+    saveAuthSubsetBlacklistFilter,
+  ],
 }
 
 const persistedReducer = persistReducer(persistConfig, reducers)
@@ -46,29 +47,6 @@ const store = configureStore({
   reducer: persistedReducer,
   middleware: getDefaultMiddleware => {
     const middlewares = getDefaultMiddleware({
-      // serializableCheck: {
-      //   ignoredActions: [
-      //     FLUSH,
-      //     REHYDRATE,
-      //     PAUSE,
-      //     PERSIST,
-      //     PURGE,
-      //     REGISTER,
-      //     'login/rejected', // Firebase error exception only
-      //     'getCategories/rejected', // Firebase error exception only
-      //     'getCategories/pending', // Firebase error exception only
-      //     'getCategories/fulfilled', // Firebase error exception only
-      //     'getProducts/fulfilled', // Firebase error exception only
-      //     'getProducts/pending', // Firebase error exception only
-      //     'getProducts/rejected', // Firebase error exception only
-      //     // 'categories.categories.0.timestamp', // Firebase error exception only
-      //   ],
-      //   ignoredActionPaths: ['categories.categories'],
-      //   ignoredPaths: [
-      //     'categories.categories.0.timestamp',
-      //     'categories.categories.1.timestamp',
-      //   ],
-      // },
       serializableCheck: false,
     }).concat(api.middleware as Middleware)
 

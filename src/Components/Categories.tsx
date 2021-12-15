@@ -15,15 +15,23 @@ const Categories = () => {
   )
 
   return (
-    <View style={[Gutters.smallHPadding]}>
-      <Title style={[Gutters.smallVMargin, { color: Colors.primary }]}>
+    <View>
+      <Title
+        style={[
+          Gutters.smallVMargin,
+          Gutters.smallHPadding,
+          { color: Colors.primary },
+        ]}
+      >
         Categories
       </Title>
       <FlatList
+        style={[Gutters.smallHPadding]}
         horizontal
         data={categories}
         renderItem={renderItem}
         keyExtractor={item => item.id}
+        showsHorizontalScrollIndicator={false}
       />
     </View>
   )

@@ -8,8 +8,8 @@ import { WINDOW_WIDTH } from '@/Utils/getDimensions'
 import { Caption, Divider, Headline, Title } from 'react-native-paper'
 import { getIndonesianPrice, getDiscountPrice } from '@/Utils'
 import { useTheme } from '@/Hooks'
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import ProductDetailsHeader from '@/Components/ProductDetailsHeader'
+import { ProductDetailsBottomMenu } from '@/Components'
 
 type Props = NativeStackScreenProps<RootStackParamList, 'ProductDetailPage'>
 
@@ -110,6 +110,7 @@ const ProductDetailsContainer = ({ route: { params } }: Props) => {
             </>
           )}
         </View>
+
         <View
           style={[
             Gutters.largeBPadding,
@@ -124,32 +125,7 @@ const ProductDetailsContainer = ({ route: { params } }: Props) => {
         <Divider />
       </Animated.ScrollView>
 
-      <View style={[styles.ActionButtons, { backgroundColor: Colors.primary }]}>
-        <MaterialCommunityIcons
-          name="chat"
-          size={34}
-          style={[styles.Button, styles.FirstButton]}
-          onPress={() => {}}
-        />
-        <MaterialCommunityIcons
-          name="cart"
-          size={34}
-          style={[styles.Button]}
-          onPress={() => {}}
-        />
-        <View style={[styles.ButtonWide, { borderTopColor: Colors.primary }]}>
-          <MaterialCommunityIcons
-            name="basket"
-            size={34}
-            style={{ color: Colors.primary }}
-            onPress={() => {}}
-          />
-          <Text style={[styles.ButtonWideText, { color: Colors.primary }]}>
-            Buy Now
-          </Text>
-        </View>
-      </View>
-
+      <ProductDetailsBottomMenu product={params} />
       <ProductDetailsHeader event={scrollY} name={name} />
     </>
   )
@@ -207,37 +183,5 @@ const styles = StyleSheet.create({
   },
   ProductPrice: {
     lineHeight: 26,
-  },
-  ActionButtons: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    left: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 55,
-  },
-  Button: {
-    flex: 1,
-    color: '#fff',
-    textAlign: 'center',
-  },
-  FirstButton: {
-    borderRightWidth: 1,
-    borderRightColor: '#fff',
-  },
-  ButtonWide: {
-    flex: 2,
-    backgroundColor: '#fff',
-    height: 55,
-    borderTopWidth: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  ButtonWideText: {
-    marginLeft: 10,
-    fontWeight: '400',
-    fontSize: 18,
   },
 })
