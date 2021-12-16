@@ -15,7 +15,7 @@ const CategoryCard = ({
 
   return (
     <TouchableOpacity
-      onPress={() => navigate('SearchPage')}
+      onPress={() => navigate('SearchPage', { category: name })}
       style={styles.Container}
     >
       <Card style={[Gutters.smallRMargin, styles.Card]} mode="elevated">

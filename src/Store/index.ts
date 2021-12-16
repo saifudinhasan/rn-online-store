@@ -18,10 +18,10 @@ import { createBlacklistFilter } from 'redux-persist-transform-filter'
 const reducers = combineReducers({
   theme,
   auth,
-  categories,
+  categories, //
   products,
   carts,
-  slideBanners,
+  slideBanners, //
   orders,
 })
 

@@ -12,7 +12,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'SearchPage'>
 
 const SearchContainer = ({
   route: {
-    params: { query },
+    params: { query, category },
   },
 }: Props) => {
   const { Gutters, Colors } = useTheme()
@@ -21,17 +21,25 @@ const SearchContainer = ({
 
   useEffect(() => {
     setTimeout(() => {
-      const q = products.filter(product => {
-        const regex = new RegExp(`${query}`, 'gi')
-        return (
-          product.name?.match(regex) ||
-          product.category?.match(regex) ||
-          product.description?.match(regex) ||
-          product.variant?.match(regex)
-        )
-      })
-      setSearchProducts(q)
-    }, 1000)
+      let results = []
+      if (category) {
+        results = products.filter(product => {
+          const regex = new RegExp(`${category}`, 'gi')
+          return product.category?.match(regex)
+        })
+      } else {
+        results = products.filter(product => {
+          const regex = new RegExp(`${query}`, 'gi')
+          return (
+            product.name?.match(regex) ||
+            product.category?.match(regex) ||
+            product.description?.match(regex) ||
+            product.variant?.match(regex)
+          )
+        })
+      }
+      setSearchProducts(results)
+    }, 500)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -42,7 +50,7 @@ const SearchContainer = ({
   return (
     <ScrollView style={[Gutters.smallHPadding]}>
       <Title style={[Gutters.smallVMargin, { color: Colors.primary }]}>
-        Search for {query} :
+        Search for {category || query} :
       </Title>
       <View style={styles.ProductContainer}>
         {searchProducts?.length ? (
