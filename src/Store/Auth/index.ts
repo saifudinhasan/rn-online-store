@@ -11,7 +11,7 @@ import {
   signInWithCredential,
 } from 'firebase/auth'
 import { azureConfig } from '@/Config/azure'
-import webClient from '@/Config/google'
+import googleWebClient from '@/Config/googleWebClient'
 
 export interface Auth {
   authenticated: boolean
@@ -104,14 +104,14 @@ export const googleLogin = createAsyncThunk<IUser>(
   async (_, { rejectWithValue }) => {
     try {
       GoogleSignin.configure({
-        webClientId: webClient,
+        webClientId: googleWebClient,
         offlineAccess: true,
       })
 
       await GoogleSignin.hasPlayServices()
 
       const { idToken } = await GoogleSignin.signIn()
-      const credential = await GoogleAuthProvider.credential(idToken)
+      const credential = GoogleAuthProvider.credential(idToken)
       const {
         user: {
           displayName,
@@ -124,7 +124,7 @@ export const googleLogin = createAsyncThunk<IUser>(
         },
       } = await signInWithCredential(auth, credential)
 
-      const userInfo = {
+      return {
         displayName,
         email,
         emailVerified,
@@ -136,8 +136,6 @@ export const googleLogin = createAsyncThunk<IUser>(
         idToken,
         accessToken: credential.accessToken,
       }
-
-      return userInfo
     } catch (error) {
       return rejectWithValue(error)
     }
@@ -160,7 +158,7 @@ export const login = createAsyncThunk<IUser, ILoginParams>(
         },
       } = await signInWithEmailAndPassword(auth, loginEmail, password)
 
-      const userInfo = {
+      return {
         displayName,
         email,
         emailVerified,
@@ -170,8 +168,6 @@ export const login = createAsyncThunk<IUser, ILoginParams>(
         providerId: 'email',
         refreshToken,
       }
-
-      return userInfo
     } catch (err) {
       return rejectWithValue(err)
     }
@@ -194,7 +190,7 @@ export const signup = createAsyncThunk<IUser, ISignupParams>(
         },
       } = await createUserWithEmailAndPassword(auth, signupEmail, password)
 
-      const userInfo = {
+      return {
         displayName,
         email,
         emailVerified,
@@ -203,8 +199,6 @@ export const signup = createAsyncThunk<IUser, ISignupParams>(
         uid,
         refreshToken,
       }
-
-      return userInfo
     } catch (err) {
       return rejectWithValue(err)
     }
@@ -235,67 +229,43 @@ const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: builder => {
+    /**
+     * We can use addMatcher instead use sharedReducer
+     * https://redux-toolkit.js.org/api/createReducer#builderaddmatcher
+     */
+    const sharedFulfilled = (state: Auth, { payload }: any) => {
+      state.authenticated = true
+      state.currentUser = payload
+      state.authLoading = false
+    }
+
+    const sharedRejected = (state: Auth, { payload }: any) => {
+      state.authenticated = false
+      state.error = String(payload)
+      state.authLoading = false
+    }
+
+    const sharedPending = (state: Auth) => {
+      state.authLoading = true
+      state.error = null
+    }
+
     builder
+      .addCase(azureLogin.fulfilled, sharedFulfilled)
+      .addCase(googleLogin.fulfilled, sharedFulfilled)
+      .addCase(signup.fulfilled, sharedFulfilled)
+      .addCase(login.fulfilled, sharedFulfilled)
 
-      .addCase(azureLogin.fulfilled, (state, { payload }) => {
-        state.authenticated = true
-        state.currentUser = payload
-        state.authLoading = false
-      })
-      .addCase(azureLogin.pending, state => {
-        state.authLoading = true
-        state.error = null
-      })
-      .addCase(azureLogin.rejected, (state, { payload }) => {
-        state.authenticated = false
-        state.error = String(payload)
-        state.authLoading = false
-      })
+      .addCase(azureLogin.rejected, sharedRejected)
+      .addCase(googleLogin.rejected, sharedRejected)
+      .addCase(signup.rejected, sharedRejected)
+      .addCase(login.rejected, sharedRejected)
 
-      .addCase(googleLogin.fulfilled, (state, { payload }) => {
-        state.authenticated = true
-        state.currentUser = payload
-        state.authLoading = false
-      })
-      .addCase(googleLogin.pending, state => {
-        state.authLoading = true
-        state.error = null
-      })
-      .addCase(googleLogin.rejected, (state, { payload }) => {
-        state.authenticated = false
-        state.error = String(payload)
-        state.authLoading = false
-      })
-
-      .addCase(signup.fulfilled, (state, { payload }) => {
-        state.authenticated = true
-        state.currentUser = payload
-        state.authLoading = false
-      })
-      .addCase(signup.pending, state => {
-        state.authLoading = true
-        state.error = null
-      })
-      .addCase(signup.rejected, (state, { payload }) => {
-        state.authenticated = false
-        state.error = String(payload)
-        state.authLoading = false
-      })
-
-      .addCase(login.fulfilled, (state, { payload }) => {
-        state.authenticated = true
-        state.currentUser = payload
-        state.authLoading = false
-      })
-      .addCase(login.pending, state => {
-        state.authLoading = true
-        state.error = null
-      })
-      .addCase(login.rejected, (state, { payload }) => {
-        state.authenticated = false
-        state.error = String(payload)
-        state.authLoading = false
-      })
+      .addCase(azureLogin.pending, sharedPending)
+      .addCase(googleLogin.pending, sharedPending)
+      .addCase(signup.pending, sharedPending)
+      .addCase(login.pending, sharedPending)
+      .addCase(logout.pending, sharedPending)
 
       .addCase(logout.fulfilled, state => {
         state.authenticated = false
@@ -305,10 +275,6 @@ const authSlice = createSlice({
       .addCase(logout.rejected, (state, { error }) => {
         state.authLoading = false
         state.error = error.message
-      })
-      .addCase(logout.pending, state => {
-        state.authLoading = true
-        state.error = null
       })
   },
 })

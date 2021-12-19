@@ -1,17 +1,17 @@
+import { HomeContainer } from '@/Containers'
 import {
-  CartContainer,
-  LoginContainer,
-  ProductDetailsContainer,
-  SearchContainer,
-  SignupContainer,
-  StartupContainer,
-} from '@/Containers'
-import InvoiceContainer from '@/Containers/InvoiceContainer'
+  CartsScreen,
+  InvoiceScreen,
+  LoginScreen,
+  ProductDetailsScreen,
+  SearchScreen,
+  SignupScreen,
+  StartupScreen,
+} from '@/Screens'
 import { StackNavigationOptions } from '@react-navigation/stack'
 import { ComponentType } from 'react'
-import HomeNavigator from './HomeBottomNavigator'
 
-interface IScreen {
+export interface IScreen {
   name: string
   component: ComponentType<any>
   options?: StackNavigationOptions
@@ -23,23 +23,23 @@ interface IScreen {
 export const mainScreens: IScreen[] = [
   {
     name: 'Startup',
-    component: StartupContainer,
+    component: StartupScreen,
   },
   {
     name: 'HomePage',
-    component: HomeNavigator,
+    component: HomeContainer,
     options: {
       animationEnabled: false,
     },
   },
   {
     name: 'ProductDetailPage',
-    component: ProductDetailsContainer,
+    component: ProductDetailsScreen,
     options: { headerShown: false },
   },
   {
     name: 'SearchPage',
-    component: SearchContainer,
+    component: SearchScreen,
     options: { headerShown: true },
   },
 ]
@@ -50,12 +50,12 @@ export const mainScreens: IScreen[] = [
 export const authenticatedScreens: IScreen[] = [
   {
     name: 'CartPage',
-    component: CartContainer,
+    component: CartsScreen,
     options: { headerShown: true },
   },
   {
     name: 'InvoicePage',
-    component: InvoiceContainer,
+    component: InvoiceScreen,
     options: { headerShown: false },
   },
 ]
@@ -66,12 +66,12 @@ export const authenticatedScreens: IScreen[] = [
 export const unAuthenticatedScreens = [
   {
     name: 'LoginPage',
-    component: LoginContainer,
+    component: LoginScreen,
     options: { headerShown: true },
   },
   {
     name: 'SignupPage',
-    component: SignupContainer,
+    component: SignupScreen,
     options: { headerShown: true },
   },
 ]

@@ -4,8 +4,7 @@
  *
  * You can add other navigation functions that you need and export them
  */
-import { Order } from '@/Interfaces/Order'
-import { Product } from '@/Interfaces/Product'
+import { IOrder, IProduct } from '@/Interfaces'
 import {
   CommonActions,
   createNavigationContainerRef,
@@ -16,9 +15,9 @@ export type RootStackParamList = {
   Startup: undefined
   HomePage: undefined
   CartPage: undefined
-  ProductDetailPage: Product
+  ProductDetailPage: IProduct
   SearchPage: { query: string; category?: string }
-  InvoicePage: Order
+  InvoicePage: IOrder
 
   Orders: undefined
   Profile: undefined

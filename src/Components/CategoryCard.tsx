@@ -1,15 +1,14 @@
 import { useTheme } from '@/Hooks'
-import { Category } from '@/Interfaces'
+import { ICategory } from '@/Interfaces'
 import { navigate } from '@/Navigators/utils'
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, StyleSheet, Text, View } from 'react-native'
 import { Card } from 'react-native-paper'
 
 const CategoryCard = ({
   category: { imageURL, name },
 }: {
-  category: Category
+  category: ICategory
 }) => {
   const { Gutters, Colors } = useTheme()
 

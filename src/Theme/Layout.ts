@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native'
-import { ThemeLayout, ThemeVariables } from '@/Theme/theme.type'
+import { ThemeLayout } from '@/Theme/theme.type'
 
 /**
  *
  * @param Theme can be spread like {Colors, NavigationColors, Gutters, Layout, Common, ...args}
  * @return {*}
  */
-export default function ({}: ThemeVariables): ThemeLayout {
+export default function (): ThemeLayout {
   return StyleSheet.create({
     /* Column Layouts */
     column: {

@@ -1,6 +1,6 @@
-import { useTheme } from '@/Hooks'
-import useAuth from '@/Hooks/useAuth'
+import { useTheme, useAuth } from '@/Hooks'
 import { navigateAndSimpleReset } from '@/Navigators/utils'
+import { AppDispatch } from '@/Store'
 import { azureLogin, googleLogin } from '@/Store/Auth'
 import React from 'react'
 import { StyleSheet } from 'react-native'
@@ -11,7 +11,7 @@ const OAuthButtons = () => {
   const { Colors, Gutters } = useTheme()
   const { authLoading } = useAuth()
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   return (
     <>

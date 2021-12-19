@@ -1,36 +1,30 @@
+import React from 'react'
 import { useTheme } from '@/Hooks'
-import { Product } from '@/Interfaces/Product'
+import { IProduct } from '@/Interfaces'
 import { navigate } from '@/Navigators/utils'
 import { getDiscountPrice, getIndonesianPrice } from '@/Utils'
 import { WINDOW_WIDTH } from '@/Utils/getDimensions'
-import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Card } from 'react-native-paper'
 
-const ProductCard = ({ item, index }: { item: Product; index: number }) => {
+const ProductCard = ({ item, index }: { item: IProduct; index: number }) => {
   const { Gutters, MetricsSizes, Colors } = useTheme()
 
   const { name, price, images, discount } = item
 
-  // Width hack : width - 10 for padding right and left, 10 for middle gap
-  const cardWidth = () => (WINDOW_WIDTH - 3 * Number(MetricsSizes.small)) / 2
+  const imageHeight = () => (WINDOW_WIDTH - 3 * Number(MetricsSizes.small)) / 2
 
   return (
-    // We can't use FlatList inside ScrollView
     <TouchableOpacity
       onPress={() => navigate('ProductDetailPage', item)}
-      style={[
-        styles.Card,
-        index % 2 === 0 && Gutters.smallRMargin,
-        { width: cardWidth() },
-      ]}
+      style={[styles.Card, index % 2 === 0 && Gutters.smallRMargin]}
     >
       <Card>
         <Card.Cover
           source={{ uri: images[0].imageURL }}
           resizeMode="cover"
           // Keep aspect ratio to 1 : 1
-          style={[styles.Image, { height: cardWidth() }]}
+          style={[styles.Image, { height: imageHeight() }]}
         />
 
         <View
@@ -81,7 +75,7 @@ export default ProductCard
 const styles = StyleSheet.create({
   Card: {
     elevation: 7,
-    marginBottom: 10,
+    flex: 1 / 2,
   },
   Image: {},
   DetailContainer: {

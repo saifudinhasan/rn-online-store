@@ -1,28 +1,19 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { combineReducers, Middleware } from 'redux'
+import { combineReducers } from 'redux'
 import { persistReducer, persistStore } from 'redux-persist'
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/query'
 
-import { api } from '@/Services/api'
 import theme from './Theme'
 import auth from './Auth'
-import categories from './Categories'
-import products from './Products'
 import carts from './Carts'
-import slideBanners from './SlideBanners'
-import orders from './Orders'
 import { encryptTransform } from 'redux-persist-transform-encrypt'
 import { createBlacklistFilter } from 'redux-persist-transform-filter'
 
 const reducers = combineReducers({
   theme,
   auth,
-  categories, //
-  products,
   carts,
-  slideBanners, //
-  orders,
 })
 
 const saveAuthSubsetBlacklistFilter = createBlacklistFilter('auth')
@@ -48,7 +39,7 @@ const store = configureStore({
   middleware: getDefaultMiddleware => {
     const middlewares = getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(api.middleware as Middleware)
+    })
 
     if (__DEV__ && !process.env.JEST_WORKER_ID) {
       const createDebugger = require('redux-flipper').default
@@ -64,3 +55,8 @@ const persistor = persistStore(store)
 setupListeners(store.dispatch)
 
 export { store, persistor }
+
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch
